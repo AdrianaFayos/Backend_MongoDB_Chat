@@ -1,5 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const secreta = "Esto es lo más difícil";
 
 class Cliente {
 
@@ -25,6 +27,27 @@ class Cliente {
             isActive : user.isActive},
             {new:true,omitUndefined:true}
         );
+    }
+
+    async loginUser(email, password){
+
+        const user =  await User.findOne({email})
+        if(!user){
+            throw new Error('Email does not exist')
+        }
+        if (!await bcrypt.compare(password,user.password)){
+            throw new Error('Password incorrect')
+        }
+        const payload = {
+            userId: user._id,
+            tokenCreationDate: new Date,
+            isAdmin: user.isAdmin
+        }
+
+        const token = jwt.sign(payload, secreta)
+
+        return ({token, user});
+
     }
 }
 
