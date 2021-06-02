@@ -16,6 +16,16 @@ class Cliente {
         return User.create(user);
     }
 
+    async modifyUser(user) {
+        return User.findByIdAndUpdate(
+            {_id : user.id},
+            { email : user.email,
+            country : user.country,
+            city: user.city,
+            isActive : user.isActive},
+            {new:true,omitUndefined:true}
+        );
+    }
 }
 
 let userController = new Cliente();

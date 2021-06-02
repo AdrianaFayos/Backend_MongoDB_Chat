@@ -66,11 +66,11 @@ router.post('/addmessage', async(req, res) => {
     }
 })
 
-// POST - Delete one chat
+// DELETE - Delete one chat
 
-router.post('/deletechat', async(req, res) => {
+router.delete('/deletechat', async(req, res) => {
     try {
-        const id = req.body;
+        const id = req.body.id;
         res.json(await chatController.deleteChat(id))
     } catch (err) {
         return res.status(500).json({
